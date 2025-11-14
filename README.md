@@ -1,39 +1,52 @@
-# Shizen_TechincalAsignment_Rajiv
+# Universal Portfolio Upload Function - Technical Assignment
 
-Universal Portfolio Upload Function - Technical Assignment
-🎯 Assignment Overview
+## 🎯 Assignment Overview
+
 Welcome! You're applying for a backend engineering position at our fintech company. This assignment tests your ability to extend existing systems while maintaining backward compatibility—a critical skill for our team.
 
-Time Allocation: 4-6 hours
-Evaluation Focus: Code quality, extensibility, error handling, backward compatibility
+**Time Allocation:** 4-6 hours  
+**Evaluation Focus:** Code quality, extensibility, error handling, backward compatibility
 
-📋 Table of Contents
-Background & Context
-Current System
-Your Mission
-Task Breakdown
-Evaluation Criteria
-Test Data
-Submission Guidelines
-FAQ
-🏢 Background & Context
-The Business Problem
+---
+
+## 📋 Table of Contents
+
+- [Background & Context](#background--context)
+- [Current System](#current-system)
+- [Your Mission](#your-mission)
+- [Task Breakdown](#task-breakdown)
+- [Evaluation Criteria](#evaluation-criteria)
+- [Test Data](#test-data)
+- [Submission Guidelines](#submission-guidelines)
+- [FAQ](#faq)
+
+---
+
+## 🏢 Background & Context
+
+### The Business Problem
+
 Our company manages investment portfolios for institutional clients. Currently, our system only handles equity portfolios at the individual security level. We need to expand to support:
 
-Multiple Asset Classes:
-Equities (existing)
-Municipal Bonds (new)
-Sovereign Bonds (new)
-Portfolio Structures:
-Individual securities (existing)
-Funds (collection of individual securities)
-Fund of Funds (collection of funds)
-Mixed portfolios (any combination)
-Portfolio Levels:
-Individual holdings
-Portfolio-level aggregations
-Multi-tier fund structures
-Key Definitions
+1. **Multiple Asset Classes:**
+   - Equities (existing)
+   - Municipal Bonds (new)
+   - Sovereign Bonds (new)
+
+2. **Portfolio Structures:**
+   - Individual securities (existing)
+   - Funds (collection of individual securities)
+   - Fund of Funds (collection of funds)
+   - Mixed portfolios (any combination)
+
+3. **Portfolio Levels:**
+   - Individual holdings
+   - Portfolio-level aggregations
+   - Multi-tier fund structures
+
+### Key Definitions
+
+```
 Portfolio Hierarchy:
 
 Individual Securities Portfolio
@@ -58,12 +71,19 @@ Fund of Funds
     └── VGTSX (fund)
         ├── TSM
         └── EFA
-🔧 Current System
-Existing Code Structure
-The repository contains a working equity-only portfolio upload system. Your job is to extend it WITHOUT breaking existing functionality.
+```
 
-models.py - Current Database Model
-python
+---
+
+## 🔧 Current System
+
+### Existing Code Structure
+
+The repository contains a working equity-only portfolio upload system. **Your job is to extend it WITHOUT breaking existing functionality.**
+
+#### `models.py` - Current Database Model
+
+```python
 """
 Current database model - HANDLES EQUITIES ONLY
 ⚠️ DO NOT DELETE OR BREAK THIS MODEL
@@ -93,8 +113,11 @@ class Company(Base):
     # Climate/ESG metrics (existing feature)
     carbon_intensity = Column(Float)  # tons CO2 per $M revenue
     climate_score = Column(Float)     # 0-10 scale
-portfolio_service.py - Current Upload Function
-python
+```
+
+#### `portfolio_service.py` - Current Upload Function
+
+```python
 """
 Current portfolio upload implementation
 ⚠️ THIS FUNCTION IS IN PRODUCTION - DO NOT DELETE
@@ -171,51 +194,71 @@ def fetch_equity_data(ticker: str) -> Dict:
         'carbon_intensity': 150.5,
         'climate_score': 7.2
     }
-🎯 Your Mission
-Transform the equity-only system into a universal portfolio upload function that handles:
+```
 
-✅ Existing equity CSV files (backward compatible)
-✅ Bond-only portfolios (new)
-✅ Mixed equity + bond portfolios (new)
-✅ Fund portfolios (new)
-✅ Fund of Funds portfolios (new)
-✅ Any combination of the above (new)
-Critical Requirements
-Backward Compatibility: Existing equity CSV files MUST continue to work unchanged
-Single Function: ONE universal upload function, not multiple functions
-Single Table: ONE extended database table, not separate tables per asset type
-Extensibility: Easy to add new asset types in the future
-Portfolio Hierarchy: Support individual securities, funds, and fund of funds
-📝 Task Breakdown
-Task 1: Database Schema Extension (30 minutes)
-Objective: Extend the Company model to support all asset types WITHOUT breaking existing equity functionality.
+---
 
-Requirements:
-Add fields for bond securities:
-cusip (VARCHAR 9) - for municipal bonds
-isin (VARCHAR 12) - for sovereign bonds
-maturity_date (DATE)
-credit_rating (VARCHAR 10) - e.g., "AAA", "AA+"
-coupon_rate (DOUBLE) - annual interest rate
-yield_to_worst (DOUBLE)
-duration (DOUBLE) - interest rate sensitivity
-Add fields to distinguish security types:
-security_type (VARCHAR 50) - "equity", "municipal_bond", "sovereign_bond", "fund"
-identifier_type (VARCHAR 20) - "ticker", "cusip", "isin"
-Add fields for fund structures:
-is_fund (BOOLEAN) - true if this is a fund
-parent_fund_id (VARCHAR) - for fund of funds structures
-fund_composition (JSON/TEXT) - stores underlying holdings
-Maintain backward compatibility:
-All new columns must be optional/nullable
-Existing equity records must remain valid
-Default values must not break existing queries
-Deliverables:
-Updated models.py with extended Company model
-SQL migration script (migration_001_add_bond_support.sql)
-Documentation explaining your design decisions
-Example Migration Script Structure:
-sql
+## 🎯 Your Mission
+
+Transform the equity-only system into a **universal portfolio upload function** that handles:
+
+- ✅ Existing equity CSV files (backward compatible)
+- ✅ Bond-only portfolios (new)
+- ✅ Mixed equity + bond portfolios (new)
+- ✅ Fund portfolios (new)
+- ✅ Fund of Funds portfolios (new)
+- ✅ Any combination of the above (new)
+
+### Critical Requirements
+
+1. **Backward Compatibility:** Existing equity CSV files MUST continue to work unchanged
+2. **Single Function:** ONE universal upload function, not multiple functions
+3. **Single Table:** ONE extended database table, not separate tables per asset type
+4. **Extensibility:** Easy to add new asset types in the future
+5. **Portfolio Hierarchy:** Support individual securities, funds, and fund of funds
+
+---
+
+## 📝 Task Breakdown
+
+### Task 1: Database Schema Extension (30 minutes)
+
+**Objective:** Extend the `Company` model to support all asset types WITHOUT breaking existing equity functionality.
+
+#### Requirements:
+
+1. Add fields for bond securities:
+   - `cusip` (VARCHAR 9) - for municipal bonds
+   - `isin` (VARCHAR 12) - for sovereign bonds
+   - `maturity_date` (DATE)
+   - `credit_rating` (VARCHAR 10) - e.g., "AAA", "AA+"
+   - `coupon_rate` (DOUBLE) - annual interest rate
+   - `yield_to_worst` (DOUBLE)
+   - `duration` (DOUBLE) - interest rate sensitivity
+
+2. Add fields to distinguish security types:
+   - `security_type` (VARCHAR 50) - "equity", "municipal_bond", "sovereign_bond", "fund"
+   - `identifier_type` (VARCHAR 20) - "ticker", "cusip", "isin"
+
+3. Add fields for fund structures:
+   - `is_fund` (BOOLEAN) - true if this is a fund
+   - `parent_fund_id` (VARCHAR) - for fund of funds structures
+   - `fund_composition` (JSON/TEXT) - stores underlying holdings
+
+4. Maintain backward compatibility:
+   - All new columns must be **optional/nullable**
+   - Existing equity records must remain valid
+   - Default values must not break existing queries
+
+#### Deliverables:
+
+1. **Updated `models.py`** with extended Company model
+2. **SQL migration script** (`migration_001_add_bond_support.sql`)
+3. **Documentation** explaining your design decisions
+
+#### Example Migration Script Structure:
+
+```sql
 -- migration_001_add_bond_support.sql
 -- Add bond and fund support to companies table
 
@@ -237,18 +280,27 @@ CREATE INDEX idx_company_isin ON companies(isin);
 -- Update existing records to have explicit type
 UPDATE companies SET security_type='equity', identifier_type='ticker' 
 WHERE security_type IS NULL;
-Task 2: Security Type Detection (15 minutes)
-Objective: Implement automatic identifier detection logic.
+```
+
+---
+
+### Task 2: Security Type Detection (15 minutes)
+
+**Objective:** Implement automatic identifier detection logic.
 
 The system needs to automatically detect whether an identifier is a ticker, CUSIP, or ISIN based on its format.
 
-Detection Rules:
-Identifier	Length	Format	Type	Example
-Ticker	1-5 chars	Letters only	Equity	AAPL, MSFT
-CUSIP	9 chars	Alphanumeric	Municipal Bond	037833100
-ISIN	12 chars	2 letters + 10 alphanumeric	Sovereign Bond	US0378331005
-Implementation:
-python
+#### Detection Rules:
+
+| Identifier | Length | Format | Type | Example |
+|------------|--------|--------|------|---------|
+| Ticker | 1-5 chars | Letters only | Equity | `AAPL`, `MSFT` |
+| CUSIP | 9 chars | Alphanumeric | Municipal Bond | `037833100` |
+| ISIN | 12 chars | 2 letters + 10 alphanumeric | Sovereign Bond | `US0378331005` |
+
+#### Implementation:
+
+```python
 def detect_security_type(identifier: str) -> tuple:
     """
     Automatically detect security type from identifier format
@@ -283,40 +335,57 @@ def test_detection():
     assert detect_security_type("US0378331005") == ("sovereign_bond", "isin")
     assert detect_security_type("  MSFT  ") == ("equity", "ticker")  # whitespace
     # Add more edge cases...
-Task 3: Universal Upload Function (2-3 hours)
-Objective: Transform upload_portfolio into a universal function that handles ALL scenarios.
+```
 
-Supported CSV Formats:
+---
+
+### Task 3: Universal Upload Function (2-3 hours)
+
+**Objective:** Transform `upload_portfolio` into a universal function that handles ALL scenarios.
+
+#### Supported CSV Formats:
+
 The function must handle multiple CSV format variations:
 
-Format 1: Equity-only (EXISTING - MUST REMAIN WORKING)
-csv
+##### Format 1: Equity-only (EXISTING - MUST REMAIN WORKING)
+```csv
 Ticker,MarketValue
 AAPL,150000000
 MSFT,120000000
 GOOGL,180000000
-Format 2: Bond-only (NEW)
-csv
+```
+
+##### Format 2: Bond-only (NEW)
+```csv
 CUSIP,MarketValue
 037833100,100000000
 313369AJ3,80000000
-Format 3: Mixed with generic identifier (NEW)
-csv
+```
+
+##### Format 3: Mixed with generic identifier (NEW)
+```csv
 Identifier,MarketValue
 AAPL,150000000
 037833100,100000000
 MSFT,120000000
 US91282CHX4,90000000
-Format 4: Fund Portfolio (NEW)
-csv
+```
+
+##### Format 4: Fund Portfolio (NEW)
+```csv
 FundIdentifier,MarketValue,Holdings
 VFIAX,500000000,"AAPL,MSFT,GOOGL,JPM,JNJ"
-Format 5: Fund of Funds (NEW)
-csv
+```
+
+##### Format 5: Fund of Funds (NEW)
+```csv
 FundOfFunds,MarketValue,ChildFunds
 STRATEGIC_2025,1000000000,"VFIAX,VGTSX,VBMFX"
-Implementation Requirements:
-python
+```
+
+#### Implementation Requirements:
+
+```python
 def upload_portfolio(
     file_path: str,
     portfolio_id: str,
@@ -403,29 +472,39 @@ def resolve_fund_of_funds(fund_id: str, depth: int = 0, max_depth: int = 5) -> L
     """
     # YOUR IMPLEMENTATION HERE
     pass
-Design Considerations:
-Column Name Flexibility: The function should accept various column names:
-Ticker, Symbol, Identifier for equity
-CUSIP, Identifier for bonds
-ISIN, Identifier for sovereign bonds
-Error Handling: Gracefully handle:
-Missing columns
-Invalid identifiers
-API failures
-Malformed CSV files
-Circular fund references
-Performance: Optimize for:
-Batch API calls (don't call API for each security individually)
-Caching (avoid redundant API calls for same security)
-Memory efficiency (handle large files)
-Extensibility: Make it easy to add:
-New asset types (derivatives, crypto, etc.)
-New identifier types
-New data sources
-Task 4: Portfolio Metrics Calculation (1 hour)
-Objective: Implement portfolio-level metrics that work across all structures.
+```
 
-python
+#### Design Considerations:
+
+1. **Column Name Flexibility:** The function should accept various column names:
+   - `Ticker`, `Symbol`, `Identifier` for equity
+   - `CUSIP`, `Identifier` for bonds
+   - `ISIN`, `Identifier` for sovereign bonds
+
+2. **Error Handling:** Gracefully handle:
+   - Missing columns
+   - Invalid identifiers
+   - API failures
+   - Malformed CSV files
+   - Circular fund references
+
+3. **Performance:** Optimize for:
+   - Batch API calls (don't call API for each security individually)
+   - Caching (avoid redundant API calls for same security)
+   - Memory efficiency (handle large files)
+
+4. **Extensibility:** Make it easy to add:
+   - New asset types (derivatives, crypto, etc.)
+   - New identifier types
+   - New data sources
+
+---
+
+### Task 4: Portfolio Metrics Calculation (1 hour)
+
+**Objective:** Implement portfolio-level metrics that work across all structures.
+
+```python
 def calculate_portfolio_metrics(portfolio_id: str) -> Dict:
     """
     Calculate portfolio-level metrics regardless of structure
@@ -488,11 +567,17 @@ def calculate_weighted_metric(securities: List[Company], metric_name: str) -> fl
     """
     # YOUR IMPLEMENTATION HERE
     pass
-Task 5: Testing & Documentation (30 minutes)
-Required Test Cases:
-Create comprehensive tests in test_portfolio_service.py:
+```
 
-python
+---
+
+### Task 5: Testing & Documentation (30 minutes)
+
+#### Required Test Cases:
+
+Create comprehensive tests in `test_portfolio_service.py`:
+
+```python
 import pytest
 from portfolio_service import upload_portfolio, calculate_portfolio_metrics
 
@@ -596,62 +681,82 @@ class TestErrorHandling:
     def test_api_failure_resilience(self):
         """Continue processing when API calls fail"""
         pass
-Documentation Requirements:
+```
+
+#### Documentation Requirements:
+
 Create detailed documentation in your submission:
 
-IMPLEMENTATION.md:
-Your design approach and architecture decisions
-How you maintained backward compatibility
-Trade-offs you considered
-Performance optimizations
-Future extensibility considerations
-API_DOCUMENTATION.md:
-Complete function signatures
-Parameter descriptions
-Return value specifications
-Usage examples
-Error codes and handling
-SETUP.md:
-Installation instructions
-Dependencies
-Database setup
-Running tests
-Deployment considerations
-🏆 Evaluation Criteria
+1. **`IMPLEMENTATION.md`:**
+   - Your design approach and architecture decisions
+   - How you maintained backward compatibility
+   - Trade-offs you considered
+   - Performance optimizations
+   - Future extensibility considerations
+
+2. **`API_DOCUMENTATION.md`:**
+   - Complete function signatures
+   - Parameter descriptions
+   - Return value specifications
+   - Usage examples
+   - Error codes and handling
+
+3. **`SETUP.md`:**
+   - Installation instructions
+   - Dependencies
+   - Database setup
+   - Running tests
+   - Deployment considerations
+
+---
+
+## 🏆 Evaluation Criteria
+
 Your submission will be evaluated on:
 
-Criterion	Weight	What We're Looking For
-Backward Compatibility	25%	Existing equity CSV files work unchanged<br>No breaking changes to current functionality<br>Existing portfolios load correctly
-Code Design	25%	Clean abstractions and separation of concerns<br>DRY principle (no unnecessary duplication)<br>Easy to extend for new asset types<br>Appropriate use of design patterns
-Correctness	20%	All test cases pass<br>Handles edge cases properly<br>Accurate calculations<br>Proper data validation
-Error Handling	15%	Graceful degradation<br>Informative error messages<br>No silent failures<br>Proper exception handling
-Performance	10%	Efficient for large files (1000+ securities)<br>Minimal redundant API calls<br>Smart caching strategy<br>Reasonable memory usage
-Documentation	5%	Clear code comments<br>Comprehensive README<br>API documentation<br>Design decisions explained
-📊 Test Data
-The repository includes test data files in the test_data/ directory:
+| Criterion | Weight | What We're Looking For |
+|-----------|--------|------------------------|
+| **Backward Compatibility** | 25% | Existing equity CSV files work unchanged<br>No breaking changes to current functionality<br>Existing portfolios load correctly |
+| **Code Design** | 25% | Clean abstractions and separation of concerns<br>DRY principle (no unnecessary duplication)<br>Easy to extend for new asset types<br>Appropriate use of design patterns |
+| **Correctness** | 20% | All test cases pass<br>Handles edge cases properly<br>Accurate calculations<br>Proper data validation |
+| **Error Handling** | 15% | Graceful degradation<br>Informative error messages<br>No silent failures<br>Proper exception handling |
+| **Performance** | 10% | Efficient for large files (1000+ securities)<br>Minimal redundant API calls<br>Smart caching strategy<br>Reasonable memory usage |
+| **Documentation** | 5% | Clear code comments<br>Comprehensive README<br>API documentation<br>Design decisions explained |
 
-equity_legacy.csv (Backward Compatibility Test)
-csv
+---
+
+## 📊 Test Data
+
+The repository includes test data files in the `test_data/` directory:
+
+### `equity_legacy.csv` (Backward Compatibility Test)
+```csv
 Ticker,MarketValue
 AAPL,150000000
 MSFT,120000000
 GOOGL,180000000
 AMZN,140000000
 TSLA,110000000
-bonds_municipal.csv
-csv
+```
+
+### `bonds_municipal.csv`
+```csv
 CUSIP,MarketValue
 037833100,100000000
 313369AJ3,80000000
 64966LAA4,75000000
-bonds_sovereign.csv
-csv
+```
+
+### `bonds_sovereign.csv`
+```csv
 ISIN,MarketValue
 US0378331005,150000000
 US91282CHX4,120000000
 US459200HU15,100000000
-mixed_portfolio.csv
-csv
+```
+
+### `mixed_portfolio.csv`
+```csv
 Identifier,MarketValue
 AAPL,150000000
 037833100,100000000
@@ -659,199 +764,262 @@ MSFT,120000000
 US91282CHX4,90000000
 GOOGL,130000000
 313369AJ3,70000000
-fund_portfolio.csv
-csv
+```
+
+### `fund_portfolio.csv`
+```csv
 FundIdentifier,MarketValue,Holdings
 VFIAX,500000000,"AAPL,MSFT,GOOGL,JPM,JNJ,V,PG,UNH,HD,DIS"
 VGTSX,300000000,"TSM,ASML,SAP,TM,HSBC"
 VBMFX,400000000,"037833100,313369AJ3,64966LAA4"
-fund_of_funds.csv
-csv
+```
+
+### `fund_of_funds.csv`
+```csv
 FundOfFunds,MarketValue,ChildFunds
 STRATEGIC_2025,1000000000,"VFIAX,VGTSX,VBMFX"
 BALANCED_2030,800000000,"VFIAX,VBMFX"
-edge_cases.csv (Malformed for Error Testing)
-csv
+```
+
+### `edge_cases.csv` (Malformed for Error Testing)
+```csv
 Identifier,MarketValue
 AAPL,not_a_number
 INVALID_TICKER,100000
 ,50000000
 037833100,
-📤 Submission Guidelines
-What to Submit:
-Code Files:
-models.py (extended)
-portfolio_service.py (extended)
-migration_001_add_bond_support.sql
-test_portfolio_service.py
-Any additional helper modules you create
-Documentation:
-IMPLEMENTATION.md (your design approach)
-API_DOCUMENTATION.md (function specifications)
-SETUP.md (installation and testing instructions)
-Tests:
-Complete test suite with all required test cases
-Test coverage report (if possible)
-How to Submit:
-Option 1: Fork this Repository (Preferred)
-Fork this repository to your GitHub account
-Create a new branch: git checkout -b solution
-Implement your solution
-Commit with clear messages
-Push to your fork
-Share the repository link with us
-Option 2: Zip File
-Complete your solution
-Include all files mentioned above
-Create a zip file: portfolio_assignment_[your_name].zip
-Email to: [recruiter_email@company.com]
-Submission Checklist:
- All existing equity tests pass
- New bond tests pass
- Mixed portfolio tests pass
- Fund and fund of funds tests pass
- Error handling tests pass
- Migration script included
- Documentation complete
- Code is well-commented
- README explains how to run everything
- No sensitive data or API keys in code
-❓ FAQ
-Q: Can I use external libraries?
-A: Yes, but justify your choices. Stick to common Python libraries (pandas, SQLAlchemy, pytest). Avoid over-engineering with unnecessary dependencies.
+```
 
-Q: Should I implement actual API calls?
-A: No, use mock implementations. Focus on the architecture and data flow. Your mocks should return realistic data structures.
+---
 
-Q: How much error handling is expected?
-A: Be thorough but not paranoid. Handle realistic error scenarios (malformed files, missing data, API failures) with clear, actionable error messages.
+## 📤 Submission Guidelines
 
-Q: Can I change the existing Company model structure?
-A: You can ADD columns and indexes, but you cannot REMOVE or RENAME existing columns. The model must remain backward compatible.
+### What to Submit:
 
-Q: What if I don't finish everything?
-A: Prioritize in this order:
+1. **Code Files:**
+   - `models.py` (extended)
+   - `portfolio_service.py` (extended)
+   - `migration_001_add_bond_support.sql`
+   - `test_portfolio_service.py`
+   - Any additional helper modules you create
 
-Backward compatibility (critical)
-Basic bond support (high priority)
-Mixed portfolios (high priority)
-Fund support (medium priority)
-Fund of funds (nice to have)
+2. **Documentation:**
+   - `IMPLEMENTATION.md` (your design approach)
+   - `API_DOCUMENTATION.md` (function specifications)
+   - `SETUP.md` (installation and testing instructions)
+
+3. **Tests:**
+   - Complete test suite with all required test cases
+   - Test coverage report (if possible)
+
+### How to Submit:
+
+#### Option 1: Fork this Repository (Preferred)
+1. Fork this repository to your GitHub account
+2. Create a new branch: `git checkout -b solution`
+3. Implement your solution
+4. Commit with clear messages
+5. Push to your fork
+6. Share the repository link with us
+
+#### Option 2: Zip File
+1. Complete your solution
+2. Include all files mentioned above
+3. Create a zip file: `portfolio_assignment_[your_name].zip`
+4. Email to: [recruiter_email@company.com]
+
+### Submission Checklist:
+
+- [ ] All existing equity tests pass
+- [ ] New bond tests pass
+- [ ] Mixed portfolio tests pass
+- [ ] Fund and fund of funds tests pass
+- [ ] Error handling tests pass
+- [ ] Migration script included
+- [ ] Documentation complete
+- [ ] Code is well-commented
+- [ ] README explains how to run everything
+- [ ] No sensitive data or API keys in code
+
+---
+
+## ❓ FAQ
+
+### Q: Can I use external libraries?
+**A:** Yes, but justify your choices. Stick to common Python libraries (pandas, SQLAlchemy, pytest). Avoid over-engineering with unnecessary dependencies.
+
+### Q: Should I implement actual API calls?
+**A:** No, use mock implementations. Focus on the architecture and data flow. Your mocks should return realistic data structures.
+
+### Q: How much error handling is expected?
+**A:** Be thorough but not paranoid. Handle realistic error scenarios (malformed files, missing data, API failures) with clear, actionable error messages.
+
+### Q: Can I change the existing Company model structure?
+**A:** You can ADD columns and indexes, but you cannot REMOVE or RENAME existing columns. The model must remain backward compatible.
+
+### Q: What if I don't finish everything?
+**A:** Prioritize in this order:
+1. Backward compatibility (critical)
+2. Basic bond support (high priority)
+3. Mixed portfolios (high priority)
+4. Fund support (medium priority)
+5. Fund of funds (nice to have)
+
 Submit what you have with clear documentation of what's incomplete and how you'd complete it.
 
-Q: Should I optimize for performance from the start?
-A: Start with correctness, then optimize. Document any performance considerations and trade-offs you made.
+### Q: Should I optimize for performance from the start?
+**A:** Start with correctness, then optimize. Document any performance considerations and trade-offs you made.
 
-Q: How should I handle funds that contain other funds?
-A: Implement recursive resolution with a max depth limit (prevent infinite loops). Consider caching to avoid redundant lookups.
+### Q: How should I handle funds that contain other funds?
+**A:** Implement recursive resolution with a max depth limit (prevent infinite loops). Consider caching to avoid redundant lookups.
 
-Q: What's more important: clever code or readable code?
-A: Readable code wins every time. We value maintainability over cleverness.
+### Q: What's more important: clever code or readable code?
+**A:** Readable code wins every time. We value maintainability over cleverness.
 
-💡 Hints for Success
-Start with This Approach:
-Phase 1: Schema (30 min)
-Extend the Company model
-Write and test the migration
-Ensure existing data remains valid
-Phase 2: Detection (15 min)
-Implement detect_security_type()
-Test with various identifiers
-Handle edge cases
-Phase 3: Simple Extension (1 hour)
-Make existing upload function handle bonds
-Keep equity logic unchanged
-Test backward compatibility
-Phase 4: Mixed Portfolios (1 hour)
-Add auto-detection of CSV format
-Handle mixed asset files
-Comprehensive error handling
-Phase 5: Funds (1-2 hours)
-Implement fund resolution
-Add fund of funds support
-Test recursive structures
-Phase 6: Metrics & Polish (30 min)
-Implement portfolio metrics
-Final testing
-Documentation
-Technical Tips:
-Use pandas effectively: DataFrames make CSV handling much easier
-Cache API results: Don't fetch the same security twice
-Batch operations: Group securities by type for efficient processing
-Validate early: Check CSV format before processing all rows
-Think about transaction boundaries: What happens if upload fails halfway?
-Consider idempotency: What if the same file is uploaded twice?
-Common Pitfalls to Avoid:
-❌ Breaking existing equity functionality
-❌ Creating separate tables for each asset type
-❌ Not handling edge cases (empty strings, whitespace, null values)
-❌ Silent failures (always report errors clearly)
-❌ Over-engineering (keep it simple and extensible)
-❌ No error messages (users need to know what went wrong)
-❌ Forgetting about performance (large files should work)
-🤔 Thought-Provoking Questions
+---
+
+## 💡 Hints for Success
+
+### Start with This Approach:
+
+1. **Phase 1: Schema (30 min)**
+   - Extend the Company model
+   - Write and test the migration
+   - Ensure existing data remains valid
+
+2. **Phase 2: Detection (15 min)**
+   - Implement `detect_security_type()`
+   - Test with various identifiers
+   - Handle edge cases
+
+3. **Phase 3: Simple Extension (1 hour)**
+   - Make existing upload function handle bonds
+   - Keep equity logic unchanged
+   - Test backward compatibility
+
+4. **Phase 4: Mixed Portfolios (1 hour)**
+   - Add auto-detection of CSV format
+   - Handle mixed asset files
+   - Comprehensive error handling
+
+5. **Phase 5: Funds (1-2 hours)**
+   - Implement fund resolution
+   - Add fund of funds support
+   - Test recursive structures
+
+6. **Phase 6: Metrics & Polish (30 min)**
+   - Implement portfolio metrics
+   - Final testing
+   - Documentation
+
+### Technical Tips:
+
+- **Use pandas effectively:** DataFrames make CSV handling much easier
+- **Cache API results:** Don't fetch the same security twice
+- **Batch operations:** Group securities by type for efficient processing
+- **Validate early:** Check CSV format before processing all rows
+- **Think about transaction boundaries:** What happens if upload fails halfway?
+- **Consider idempotency:** What if the same file is uploaded twice?
+
+### Common Pitfalls to Avoid:
+
+- ❌ Breaking existing equity functionality
+- ❌ Creating separate tables for each asset type
+- ❌ Not handling edge cases (empty strings, whitespace, null values)
+- ❌ Silent failures (always report errors clearly)
+- ❌ Over-engineering (keep it simple and extensible)
+- ❌ No error messages (users need to know what went wrong)
+- ❌ Forgetting about performance (large files should work)
+
+---
+
+## 🤔 Thought-Provoking Questions
+
 After completing this assignment, you should be able to answer:
 
-Architecture:
-Why extend one table vs. creating separate tables per asset type?
-How would you handle 100 different asset types in the future?
-What are the trade-offs of your chosen approach?
-Data Flow:
-How does your solution handle a fund containing both equities and bonds?
-What happens if a Fund of Funds has circular references (Fund A → Fund B → Fund A)?
-How would you handle partial failures (some securities succeed, others fail)?
-Performance:
-Your system needs to process a CSV with 10,000 securities. How long should it take?
-How would you optimize API calls to external data providers?
-What's your caching strategy?
-Extensibility:
-How would you add support for derivatives (options, futures)?
-What if the business wants to add crypto assets?
-How would you add a new data field to all asset types?
-Error Handling:
-A CSV has 1000 rows, and row 500 has an invalid identifier. What should happen?
-The bond API is down. Should the entire upload fail?
-How do you communicate errors to users in a helpful way?
-Real-World Scenarios:
-A fund updates its holdings daily. How do you keep data fresh?
-Two portfolios contain the same securities. How do you avoid redundant storage?
-Regulatory requirements change and you need to add new compliance fields. How?
-🎓 What We're Really Testing
+1. **Architecture:**
+   - Why extend one table vs. creating separate tables per asset type?
+   - How would you handle 100 different asset types in the future?
+   - What are the trade-offs of your chosen approach?
+
+2. **Data Flow:**
+   - How does your solution handle a fund containing both equities and bonds?
+   - What happens if a Fund of Funds has circular references (Fund A → Fund B → Fund A)?
+   - How would you handle partial failures (some securities succeed, others fail)?
+
+3. **Performance:**
+   - Your system needs to process a CSV with 10,000 securities. How long should it take?
+   - How would you optimize API calls to external data providers?
+   - What's your caching strategy?
+
+4. **Extensibility:**
+   - How would you add support for derivatives (options, futures)?
+   - What if the business wants to add crypto assets?
+   - How would you add a new data field to all asset types?
+
+5. **Error Handling:**
+   - A CSV has 1000 rows, and row 500 has an invalid identifier. What should happen?
+   - The bond API is down. Should the entire upload fail?
+   - How do you communicate errors to users in a helpful way?
+
+6. **Real-World Scenarios:**
+   - A fund updates its holdings daily. How do you keep data fresh?
+   - Two portfolios contain the same securities. How do you avoid redundant storage?
+   - Regulatory requirements change and you need to add new compliance fields. How?
+
+---
+
+## 🎓 What We're Really Testing
+
 Beyond the code, we want to see:
 
-Problem-solving approach: Do you break down complex problems systematically?
-Design thinking: Do you consider trade-offs and future extensibility?
-Attention to detail: Do you handle edge cases and validate inputs?
-Communication: Are your design decisions clear and well-documented?
-Pragmatism: Do you balance perfection with practical delivery?
-Learning ability: Can you understand and extend an existing codebase?
-📞 Questions?
+- **Problem-solving approach:** Do you break down complex problems systematically?
+- **Design thinking:** Do you consider trade-offs and future extensibility?
+- **Attention to detail:** Do you handle edge cases and validate inputs?
+- **Communication:** Are your design decisions clear and well-documented?
+- **Pragmatism:** Do you balance perfection with practical delivery?
+- **Learning ability:** Can you understand and extend an existing codebase?
+
+---
+
+## 📞 Questions?
+
 If you have questions about the assignment:
 
-Technical clarifications: Email [tech-hiring@company.com]
-Submission issues: Email [recruiter@company.com]
-Timeline extensions: Contact your recruiter
+1. **Technical clarifications:** Email [tech-hiring@company.com]
+2. **Submission issues:** Email [recruiter@company.com]
+3. **Timeline extensions:** Contact your recruiter
+
 We typically respond within 24 hours on business days.
 
-⏰ Timeline
-Assignment sent: [Date]
-Submission deadline: [Date + 1 week]
-Review period: 3-5 business days
-Technical discussion: If selected, we'll schedule a call to discuss your solution
-🚀 Good Luck!
+---
+
+## ⏰ Timeline
+
+- **Assignment sent:** [Date]
+- **Submission deadline:** [Date + 1 week]
+- **Review period:** 3-5 business days
+- **Technical discussion:** If selected, we'll schedule a call to discuss your solution
+
+---
+
+## 🚀 Good Luck!
+
 This assignment reflects real challenges you'll tackle in this role. We're excited to see your approach!
 
 Remember:
+- ✅ Backward compatibility is critical
+- ✅ Clean, readable code over clever tricks
+- ✅ Document your design decisions
+- ✅ Test thoroughly
+- ✅ Have fun with it!
 
-✅ Backward compatibility is critical
-✅ Clean, readable code over clever tricks
-✅ Document your design decisions
-✅ Test thoroughly
-✅ Have fun with it!
 We look forward to reviewing your solution! 🎉
 
-Repository Structure:
+---
 
+**Repository Structure:**
+```
 portfolio-assignment/
 ├── README.md (this file)
 ├── models.py (starter code)
@@ -868,3 +1036,4 @@ portfolio-assignment/
 │   └── README.md (testing guidelines)
 └── docs/
     └── ARCHITECTURE_GUIDE.md (additional context)
+```
