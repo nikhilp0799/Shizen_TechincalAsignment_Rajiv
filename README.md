@@ -980,26 +980,7 @@ Beyond the code, we want to see:
 - **Pragmatism:** Do you balance perfection with practical delivery?
 - **Learning ability:** Can you understand and extend an existing codebase?
 
----
 
-## 📞 Questions?
-
-If you have questions about the assignment:
-
-1. **Technical clarifications:** Email [tech-hiring@company.com]
-2. **Submission issues:** Email [recruiter@company.com]
-3. **Timeline extensions:** Contact your recruiter
-
-We typically respond within 24 hours on business days.
-
----
-
-## ⏰ Timeline
-
-- **Assignment sent:** [Date]
-- **Submission deadline:** [Date + 1 week]
-- **Review period:** 3-5 business days
-- **Technical discussion:** If selected, we'll schedule a call to discuss your solution
 
 ---
 
